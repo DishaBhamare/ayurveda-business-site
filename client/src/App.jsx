@@ -1,19 +1,14 @@
-import { useEffect, useState } from "react";
+import Navbar from "./components/Navbar";
+import Hero from "./components/Hero";
+import Footer from "./components/Footer";
 
 function App() {
-  const [message, setMessage] = useState("");
-
-  useEffect(() => {
-    fetch("http://localhost:5000/")
-      .then((res) => res.text())
-      .then((data) => setMessage(data));
-  }, []);
-
   return (
-    <div style={{ textAlign: "center", marginTop: "50px" }}>
-      <h1>Ayurvedic Business Website</h1>
-      <h2>{message}</h2>
-    </div>
+    <>
+      <Navbar />
+      <Hero />
+      <Footer />
+    </>
   );
 }
 
