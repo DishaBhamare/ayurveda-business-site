@@ -1,27 +1,67 @@
+import { useContext } from "react";
+import { Link } from "react-router-dom";
+import { CartContext } from "../context/CartContext";
+
 function Navbar() {
+  const { cartItems } = useContext(CartContext);
+
   return (
     <nav className="bg-white/90 backdrop-blur-md shadow-md sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
 
-      <div>
-         <h1 className="text-3xl font-extrabold text-green-800">
+        {/* Logo */}
+        <Link to="/" className="text-3xl font-extrabold text-green-800">
           Ojasvi
-         </h1>
-        {/* <p className="text-xs text-gray-600">
-          Rooted in Ayurveda
-        </p> */}
-    </div>
+        </Link>
 
-        <ul className="hidden md:flex gap-8 text-gray-700">
-          <li className="cursor-pointer hover:text-green-700">Home</li>
-          <li className="cursor-pointer hover:text-green-700">Products</li>
-          <li className="cursor-pointer hover:text-green-700">About</li>
-          <li className="cursor-pointer hover:text-green-700">Contact</li>
+        {/* Navigation Links */}
+        <ul className="hidden md:flex gap-8 text-gray-700 font-medium">
+
+          <li>
+            <Link to="/" className="hover:text-green-700">
+              Home
+            </Link>
+          </li>
+
+          <li>
+            <Link to="/" className="hover:text-green-700">
+              Products
+            </Link>
+          </li>
+
+          <li>
+            <Link to="/" className="hover:text-green-700">
+              About
+            </Link>
+          </li>
+
+          <li>
+            <Link to="/" className="hover:text-green-700">
+              Contact
+            </Link>
+          </li>
+
         </ul>
 
-        <button className="bg-green-700 text-white px-5 py-2 rounded-lg">
-          Login
-        </button>
+        {/* Cart + Login */}
+        <div className="flex items-center gap-5">
+
+          <Link to="/cart" className="relative">
+            <span className="text-2xl">🛒</span>
+
+            <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+              {cartItems.length}
+            </span>
+          </Link>
+
+          <Link
+            to="/login"
+            className="bg-green-700 text-white px-5 py-2 rounded-lg hover:bg-green-800 transition"
+          >
+            Login
+          </Link>
+
+        </div>
 
       </div>
     </nav>

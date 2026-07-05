@@ -4,9 +4,9 @@ export const products = [
     name: "Powder Facewash",
     price: "₹80 (50g)",
     description:
-      "Herbal powder facewash that deeply cleanses skin, removes impurities, controls excess oil, helps reduce acne, and gives a natural natural glow.",
+      "Herbal powder facewash that deeply cleanses skin, removes impurities, controls excess oil, helps reduce acne, and gives a natural glow.",
     category: "skincare",
-    image: ""
+    image: "/images/facewash.jpg"
   },
   {
     id: 2,
@@ -15,7 +15,7 @@ export const products = [
     description:
       "Ayurvedic herbal hair powder made from natural ingredients that strengthens roots, reduces hair fall, and promotes healthy hair growth.",
     category: "haircare",
-    image: ""
+    image: "/images/hairpowder.jpg"
   },
   {
     id: 3,
@@ -24,7 +24,7 @@ export const products = [
     description:
       "Homemade skincare powder made from dried orange peels. Free from chemicals and preservatives. Helps brighten skin and remove dullness.",
     category: "skincare",
-    image: ""
+    image: null
   },
   {
     id: 4,
@@ -33,7 +33,7 @@ export const products = [
     description:
       "Traditional homemade herbal oil that nourishes scalp, strengthens hair roots, and improves hair texture naturally.",
     category: "haircare/oils",
-    image: ""
+    image: "/images/hairoil.jpg"
   },
   {
     id: 5,
@@ -42,6 +42,6 @@ export const products = [
     description:
       "Natural hibiscus-based face mask that helps improve skin glow, reduce acne, and refresh skin naturally.",
     category: "skincare",
-    image: ""
+    image: null
   }
 ];

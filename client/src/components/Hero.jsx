@@ -1,8 +1,8 @@
 function Hero() {
   return (
-    <section className="bg-green-50 min-h-[85vh] flex items-center">
+    <section  id="home" className="bg-green-50 min-h-[85vh] flex items-center">
       <div className="max-w-7xl mx-auto px-6 lg:px-12 grid md:grid-cols-2 gap-10 items-center">
-
+<div>
         <div>
           <span className="text-green-700 font-semibold">
             100% Natural Ayurvedic Products
@@ -17,12 +17,18 @@ function Hero() {
             and traditional wisdom for a healthier lifestyle.
           </p>
 
-          <div className="mt-8 flex gap-4">
-            <button className="bg-green-700 text-white px-6 py-3 rounded-lg hover:bg-green-800 transition">
-              Shop Now
-            </button>
+<button
+  onClick={() =>
+    document
+      .getElementById("products")
+      ?.scrollIntoView({ behavior: "smooth" })
+  }
+  className="bg-green-700 text-white m-2 px-6 py-3 rounded-lg"
+>
+  Shop Now
+</button>
 
-            <button className="border border-green-700 text-green-700 px-6 py-3 rounded-lg hover:bg-green-100 transition">
+            <button className="border border-green-700 text-green-700 m-2 px-6 py-3 rounded-lg hover:bg-green-100 transition">
               Learn More
             </button>
           </div>
@@ -34,10 +40,13 @@ function Hero() {
             alt="Ayurvedic Products"
             className="rounded-2xl shadow-xl"
           />
+          </div>
+          
         </div>
-
-      </div>
+  
+      
     </section>
+    
   );
 }
 
