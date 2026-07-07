@@ -6,6 +6,7 @@ const dotenv = require("dotenv");
 const productRoutes = require("./routes/productRoutes");
 const userRoutes = require("./routes/userRoutes");
 const cartRoutes = require("./routes/cartRoutes");
+const orderRoutes = require("./routes/orderRoutes");
 
 dotenv.config();
 
@@ -27,6 +28,9 @@ app.use("/api/users", userRoutes);
 
 // Cart APIs
 app.use("/api/cart", cartRoutes);
+
+// Order APIs
+app.use("/api/orders", orderRoutes);
 
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI)

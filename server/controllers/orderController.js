@@ -94,15 +94,49 @@ const cancelOrder=async(req,res)=>{
         message: "Order cancelled successfully",
         order
     });
-}   catch (error) {
+ }  // catch (error) {
+//     console.error(error);
+//     res.status(500).json({
+//         message: "Error cancelling order"
+//     });
+// }
+catch (error) {
     console.error(error);
+
     res.status(500).json({
-        message: "Error cancelling order"
+        message: error.message,
     });
 }
 }
+
+
+////admin -get all orders/////////////////////////////
+const getAllOrders=async(req,res)=>{
+    try{
+        // const userId=req.user;
+        const orders=await Order.find().populate("items.product").populate("user");
+        if(!orders||orders.length===0){
+            return res.status(200).json({
+                message:"No orders found",
+            });
+        }
+        res.status(200).json({
+            message:"Orders fetched successfully",
+            orders,
+
+        });
+
+        
+    }
+    catch(error){
+        console.error(error);
+        res.status(500).json({ message: "Error fetching orders" });
+    }
+};
+
 module.exports = {
     placeOrder,
     getOrders,
     cancelOrder,
+    getAllOrders,
 };
