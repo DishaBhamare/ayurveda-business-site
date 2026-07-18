@@ -11,6 +11,7 @@ import Register from "./pages/Register";
 import MyOrders from "./pages/MyOrders";
 import ProductsPage from "./pages/ProductsPage";
 import Wishlist from "./pages/Wishlist";
+import Profile from "./pages/Profile";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
 />
       <Route path="/products" element={<ProductsPage />} />
        <Route path="/wishlist" element={<Wishlist />} />
+       <Route path="/profile" element={<Profile />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Routes>

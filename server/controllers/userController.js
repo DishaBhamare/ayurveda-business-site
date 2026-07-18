@@ -123,7 +123,7 @@ const getProfile = async (req, res) => {
   try {
 
     // Find the logged-in user using the ID stored by authMiddleware req.user stores the user ID extracted from the JWT token, which was decoded in the authMiddleware. This allows us to retrieve the user's profile information from the database.
-    const user = await User.findById(req.user);
+    const user = await User.findById(req.user).select("-password");
 
     // If the user does not exist
     if (!user) {
@@ -131,11 +131,8 @@ const getProfile = async (req, res) => {
       message: "User not found",
   });
 }
-      // Send only required information
-    res.status(200).json({
-      name: user.name,
-      email: user.email,
-    });
+      // Send whole obj as we have -password already 
+    res.status(200).json(user);
 
       
 
@@ -148,10 +145,52 @@ const getProfile = async (req, res) => {
   }
 
 };
+
+//update profile 
+const updateProfile = async(req,res)=>{
+  try{
+    const user = await User.findById(req.user);
+    if (!user) {
+    return res.status(404).json({
+        message: "User not found",
+    });
+}
+  const {
+    name,
+    phone,
+    address,
+    profilePicture,
+    } = req.body;
+
+    if (!name || name.trim() === "") {
+    return res.status(400).json({
+        message: "Name is required",
+    });
+  }
+
+  user.name = name;
+  user.phone = phone;
+  user.address = address;
+  user.profilePicture = profilePicture;
+
+  await user.save();
+  res.status(200).json({
+    message: "Profile updated successfully",
+    user,
+});
+
+  }catch(error){
+     res.status(500).json({
+      message: error.message,
+    });
+
+  }
+}
   
 // Export this function so routes can use it
 module.exports = {
   registerUser,
   loginUser,
   getProfile,
+  updateProfile,
 };
