@@ -1,4 +1,4 @@
-const Cart = require("../models/Cart");
+const Cart = require ("../models/Cart");
 const Product = require("../models/Product");
 
 
@@ -67,6 +67,8 @@ const addToCart = async (req, res) => {
     // Save updated cart
     await cart.save();
 
+    await cart.populate("items.product");
+
     // Send success response
     res.status(200).json({
       message: "Product added to cart",
@@ -85,13 +87,15 @@ const getCart = async (req, res) => {
     try {
 
     const user=req.user;
-   let cart = await Cart.findOne({ user });
-        if(!cart){
-            return res.status(200).json({
-                items: [],
-                message: "Cart is empty"
-    });
-        }
+   let cart = await Cart.findOne({ user }).populate("items.product");
+      if (!cart) {
+       return res.status(200).json({
+        cart: {
+           items: [],
+        },
+        message: "Cart is empty",
+      });
+  }
         res.status(200).json({ cart });
     } catch (error) {
         res.status(500).json({
@@ -136,6 +140,8 @@ const updateCart = async (req, res) => {
         });
       }
       await cart.save(); // Save the updated cart
+
+      await cart.populate("items.product");
       res.status(200).json({
         message: "Cart updated successfully",
         cart,
@@ -147,9 +153,54 @@ const updateCart = async (req, res) => {
     }
 };
 
+//remove from cart
+  const removeFromCart = async (req, res) => {
+    try{
+      const userId = req.user;
+    const { productId } = req.body;
+
+    const cart = await Cart.findOne({ user: userId });
+
+    if (!cart) {
+    return res.status(404).json({
+        message: "Cart not found",
+    });
+}
+
+    const itemIndex = cart.items.findIndex(
+    (item) => item.product.toString() === productId
+);
+
+  //if product is not found in the cart, return an error
+  if (itemIndex === -1) {
+    return res.status(404).json({
+        message: "Product not found in cart",
+    });
+}
+    //remove the product from the cart
+    cart.items.splice(itemIndex, 1);
+    //save the updated cart
+    await cart.save();
+
+    //populate the product details in the cart so that the frontend can display them
+    await cart.populate("items.product");
+
+    res.status(200).json({
+        message: "Product removed from cart",
+        cart,
+    });
+
+    }catch (error) {
+        res.status(500).json({
+            message: error.message,
+        });
+  }
+}
+
 
 module.exports = {
   addToCart,
   getCart,
   updateCart,
+  removeFromCart,
 };

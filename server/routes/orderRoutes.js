@@ -1,7 +1,7 @@
 const express=require("express");
 const router=express.Router();
 
-const {placeOrder,getOrders,cancelOrder,getAllOrders}=require("../controllers/orderController");
+const {placeOrder,getOrders,cancelOrder,getAllOrders,updateOrderStatus}=require("../controllers/orderController");
 const authMiddleware=require("../middleware/authMiddleware");
 const adminMiddleware=require("../middleware/adminMiddleware");
 
@@ -13,5 +13,7 @@ router.get("/my-orders",authMiddleware,getOrders);
 router.put("/cancel/:orderId",authMiddleware,cancelOrder);
 //admin -get all orders
 router.get("/all",authMiddleware,adminMiddleware,getAllOrders);
+//admin -update order status
+router.put("/:orderId/status",authMiddleware,adminMiddleware,updateOrderStatus);
 
 module.exports=router;

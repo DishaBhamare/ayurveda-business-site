@@ -70,7 +70,7 @@ function FeaturedProducts() {
         {/* PRODUCTS GRID */}
         <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-8">
 
-          {filteredProducts.map((product) => (
+          {filteredProducts.slice(0, 4).map((product) => (
             <div
               key={product._id}
               className="border rounded-2xl shadow-md hover:shadow-xl transition bg-white overflow-hidden"

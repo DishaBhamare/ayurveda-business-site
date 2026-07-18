@@ -19,9 +19,10 @@ const placeOrder=async(req,res)=>{
             price:item.product.price,
         }));
 
-        const totalAmount=cart.items.reduce((total,item)=>{
-            return total+item.product.price*item.quantity;
-        },0)
+        const totalAmount = cart.items.reduce(
+            (total, item) => total + item.product.price * item.quantity,
+            0
+        );
 
     const order = await Order.create({
            user: userId,
@@ -134,9 +135,93 @@ const getAllOrders=async(req,res)=>{
     }
 };
 
+
+////////admin update order status
+const updateOrderStatus = async (req, res) => {
+    try{
+         // get orderId
+    const { orderId } = req.params;
+
+    // get status
+    const { status } = req.body;
+
+    // find order
+    const order=await Order.findById(orderId);
+
+
+    // order exists?
+    if(!order){
+        return res.status(404).json({
+            message: "Order not found",
+        })
+    }
+
+    // validate status
+    if(!status || !["Pending","Processing","Shipped", "Delivered"].includes(status)){
+        return res.status(400).json({
+            message: "Invalid status",
+        })
+    }
+
+     // cancelled?
+    if(order.status==="Cancelled"){
+        return res.status(400).json({
+            message: "Cannot update status of a cancelled order",
+        })
+    }
+
+     // same status?
+    if(order.status===status){
+        return res.status(400).json({
+            message: "Status is already updated",
+        })
+    }
+
+    const ORDER_FLOW = [
+    "Pending",
+    "Processing",
+    "Shipped",
+    "Delivered"
+    ];
+    const currentIndex = ORDER_FLOW.indexOf(order.status);
+    const newIndex = ORDER_FLOW.indexOf(status);
+    if (newIndex !== currentIndex + 1) {
+    return res.status(400).json({
+        message: "Invalid status transition"
+    });
+}
+
+
+    // update status
+    order.status = status;
+
+    // save
+    await order.save();
+
+    // success
+    res.status(200).json({
+        message: "Order status updated successfully",
+        order,
+    });
+
+
+
+    }catch(error){
+       
+           console.error(error);
+
+        res.status(500).json({
+     message: error.message
+});
+        
+    }
+  
+}
+
 module.exports = {
     placeOrder,
     getOrders,
     cancelOrder,
     getAllOrders,
+    updateOrderStatus
 };

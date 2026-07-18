@@ -1,97 +1,134 @@
-import { createContext, useState } from "react";
+import { createContext, useState,useEffect,useContext } from "react";
+import api from "../services/api";
+import AuthContext  from "./AuthContext";
 
 export const CartContext = createContext();
+
 
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
 
+  const { token } = useContext(AuthContext);
 
 // Function to add a product to the cart
-const addToCart = (product) => {
-  console.log("Clicked:", product);
+// const addToCart = (product) => {
+//   console.log("Clicked:", product);
 
-     // Check if this product already exists in the cart
-  setCartItems((prev) => {
-    console.log("Previous Cart:", prev);
+//      // Check if this product already exists in the cart
+//   setCartItems((prev) => {
+//     console.log("Previous Cart:", prev);
 
-    const existingProduct = prev.find(
-      (item) => item._id === product._id
-    );
+//     const existingProduct = prev.find(
+//       (item) => item._id === product._id
+//     );
 
-    console.log("Existing Product:", existingProduct);
+//     console.log("Existing Product:", existingProduct);
 
-     // If product already exists
-    if (existingProduct) {
-      console.log("Increasing quantity");
+//      // If product already exists
+//     if (existingProduct) {
+//       console.log("Increasing quantity");
 
-      // Create a new array
-    // Increase quantity only for the matching product
-      return prev.map((item) =>
-        item._id === product._id
-          ? { ...item, quantity: item.quantity + 1 }
-          : item
-      );
+//       // Create a new array
+//     // Increase quantity only for the matching product
+//       return prev.map((item) =>
+//         item._id === product._id
+//           ? { ...item, quantity: item.quantity + 1 }
+//           : item
+//       );
+//     }
+
+//     console.log("Adding new product");
+//  // If product is not found in the cart,
+//  // add it with quantity = 1
+//     return [...prev, { ...product, quantity: 1 }];
+//   });
+// };
+
+//load cart 
+const loadCart = async () => {
+    try {
+
+        const response = await api.get("/cart");
+
+        setCartItems(response.data.cart.items);
+
+    } catch (error) {
+        console.log(error);
     }
-
-    console.log("Adding new product");
- // If product is not found in the cart,
- // add it with quantity = 1
-    return [...prev, { ...product, quantity: 1 }];
-  });
 };
 
+//add to cart
+const addToCart = async (product) => {
+  try {
+    const response = await api.post("/cart/add", {
+      productId: product._id,
+    });
 
+    setCartItems(response.data.cart.items);
 
-// Increase quantity of a product
-const increaseQuantity = (id) => {
-
-  // Update cart based on previous state
-  setCartItems((prev) =>
-
-    // Create a new array
-    prev.map((item) =>
-
-      // Find matching product
-      item._id === id
-
-        // Increase quantity by 1
-        ? { ...item, quantity: item.quantity + 1 }
-
-        // Keep other products unchanged
-        : item
-    )
-  );
+  } catch (error) {
+    console.log(error);
+  }
 };
+
+// // Increase quantity of a product
+const increaseQuantity = async (id) => {
+    try {
+
+        const response = await api.put(
+            "/cart/update",
+
+            {
+                productId: id,
+                action: "increase"
+            }
+        );
+
+        setCartItems(response.data.cart.items);
+
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 
 // Decrease quantity of a product
-const decreaseQuantity = (id) => {
-
-  setCartItems((prev) =>
-
-    prev
-      // Update quantity
-      .map((item) =>
-
-        item._id === id
-          ? {
-              ...item,
-              quantity: item.quantity - 1
+const decreaseQuantity = async (id) => {
+    try {
+        const response = await api.put(
+            "/cart/update",
+            {
+                productId: id,
+                action: "decrease"
             }
-          : item
-      )
+        );
 
-      // Remove products whose quantity becomes 0
-      .filter((item) => item.quantity > 0)
+        setCartItems(response.data.cart.items);
 
-  );
-
+    } catch (error) {
+        console.log(error);
+    }
 };
 
-  const removeFromCart = (id) => {
-    setCartItems((prev) =>
-      prev.filter((item) => item._id !== id)
-    );
-  };
+            
+  const removeFromCart = async (id) => {
+    try {
+        const response = await api.delete("/cart/remove", {
+            data: { productId: id }
+        });
+        setCartItems(response.data.cart.items);
+    }catch (error) {
+        console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    if (token) {
+        loadCart();
+    } else {
+        setCartItems([]);
+    }
+}, [token]);
 
   return (
     <CartContext.Provider
@@ -101,6 +138,8 @@ const decreaseQuantity = (id) => {
   removeFromCart,
   increaseQuantity,
   decreaseQuantity,
+  removeFromCart,
+   loadCart,
 }}
     >
       {children}

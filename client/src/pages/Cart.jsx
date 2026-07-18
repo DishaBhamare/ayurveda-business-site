@@ -1,6 +1,7 @@
 import { useContext } from "react";
 
 import { CartContext } from "../context/CartContext";
+import { OrderContext } from "../context/OrderContext";
 
 function Cart() {
 
@@ -13,11 +14,22 @@ const {
   decreaseQuantity,
 } = useContext(CartContext);
 
+const { placeOrder, loadOrders } = useContext(OrderContext);
+
 
   // Calculate total cart price
   const totalPrice = cartItems.reduce((total, item) => {
-  return total + item.price * item.quantity;
+  return total + item.product.price * item.quantity;
 }, 0);
+
+  const handleCheckout = async () => {
+    try {
+        await placeOrder();
+        alert("Order placed successfully!");
+    } catch (error) {
+        alert(error.response?.data?.message || "Order failed");
+    }
+};
 
   return (
     <div className="max-w-5xl mx-auto px-6 py-12 min-h-screen">
@@ -43,7 +55,7 @@ const {
             {cartItems.map((item) => (
 
               <div
-                key={item._id}
+                key={item.product._id}
                 className="border rounded-xl p-5 flex justify-between items-center"
               >
 
@@ -52,12 +64,12 @@ const {
 
                   {/* Product Name */}
                   <h3 className="text-lg font-semibold">
-                    {item.name}
+                    {item.product.name}
                   </h3>
 
                   {/* Price of one product */}
                   <p className="text-gray-600">
-                    Price : ₹{item.price}
+                    Price : ₹{item.product.price}
                   </p>
 
                   {/* Quantity */}
@@ -66,7 +78,7 @@ const {
 
   {/* Decrease Quantity */}
   <button
-    onClick={() => decreaseQuantity(item._id)}
+    onClick={() => decreaseQuantity(item.product._id)}
     className="bg-gray-200 px-3 py-1 rounded hover:bg-gray-300"
   >
     -
@@ -79,7 +91,7 @@ const {
 
   {/* Increase Quantity */}
   <button
-    onClick={() => increaseQuantity(item._id)}
+    onClick={() => increaseQuantity(item.product._id)}
     className="bg-gray-200 px-3 py-1 rounded hover:bg-gray-300"
   >
     +
@@ -89,14 +101,14 @@ const {
 
                   {/* Subtotal */}
                   <p className="font-semibold text-green-700 mt-2">
-                    Subtotal : ₹{item.price * item.quantity}
+                    Subtotal : ₹{item.product.price * item.quantity}
                   </p>
 
                 </div>
 
                 {/* Remove Button */}
                 <button
-                  onClick={() => removeFromCart(item._id)}
+                  onClick={() => removeFromCart(item.product._id)}
                   className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
                 >
                   Remove
@@ -123,9 +135,12 @@ const {
 
             </div>
 
-            <button className="bg-green-700 text-white px-6 py-3 rounded-lg hover:bg-green-800">
-              Checkout
-            </button>
+          <button
+           onClick={handleCheckout}
+            className="bg-green-700 text-white px-6 py-3 rounded-lg hover:bg-green-800"
+          >
+          Checkout
+          </button>
 
           </div>
 
