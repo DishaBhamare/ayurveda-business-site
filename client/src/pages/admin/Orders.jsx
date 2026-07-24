@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../../services/api";
+import toast from "react-hot-toast";
 
 function Orders() {
     const [orders,setOrders] =useState([]);
@@ -31,11 +32,16 @@ const handleStatus = async (orderId, status) => {
         status,
     }
 );
+toast.success("Order status updated successfully");
      fetchOrders();
 
    
 } catch (error) {
    console.error(error);
+   toast.error(
+  error.response?.data?.message ||
+  "Failed to update order status"
+);
 }
 }
 

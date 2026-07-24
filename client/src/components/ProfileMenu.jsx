@@ -34,7 +34,7 @@ function ProfileMenu() {
         </button>
 
         <button
-          onClick={() => navigate("/orders")}
+          onClick={() => navigate("/my-orders")}
           className="block w-full text-left px-4 py-3 hover:bg-gray-100"
         >
           📦 My Orders

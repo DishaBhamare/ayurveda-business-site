@@ -1,5 +1,6 @@
 const Cart=require("../models/Cart");
 const Order=require("../models/Order");
+const Product = require("../models/Product");
 
 //////////Place Order
 const placeOrder=async(req,res)=>{
@@ -23,12 +24,38 @@ const placeOrder=async(req,res)=>{
             (total, item) => total + item.product.price * item.quantity,
             0
         );
+        // Check stock availability
+        for (const item of cart.items) {
+
+            if (item.product.stock < item.quantity) {
+             return res.status(400).json({
+                message: `${item.product.name} has only ${item.product.stock} items left in stock`,
+        });
+    }
+
+}
+
 
     const order = await Order.create({
            user: userId,
            items:orderItems,
            totalAmount: totalAmount,
     });
+
+    // Reduce product stock
+        for (const item of cart.items) {
+
+            await Product.findByIdAndUpdate(
+            item.product._id,
+            {
+            $inc: {
+                stock: -item.quantity,
+            },
+        }
+    );
+
+}
+
      cart.items=[];
      await cart.save();
      res.status(201).json({
@@ -87,6 +114,20 @@ const cancelOrder=async(req,res)=>{
         message: `Order cannot be cancelled because it is ${order.status}`,
      });
 } 
+
+// Restore stock
+for (const item of order.items) {
+
+    await Product.findByIdAndUpdate(
+        item.product,
+        {
+            $inc: {
+                stock: item.quantity,
+            },
+        }
+    );
+
+}
 
     order.status = "Cancelled"; // Update the order status to "Cancelled"
     await order.save(); // Save the updated order to the database

@@ -38,15 +38,15 @@ function Navbar() {
           </li>
 
           <li>
-            <Link to="/" className="hover:text-green-700">
-              About
-            </Link>
+            <a href="/#about" className="hover:text-green-700">
+            About
+      </a>
           </li>
 
           <li>
-            <Link to="/" className="hover:text-green-700">
-              Contact
-            </Link>
+            <a href="/#contact" className="hover:text-green-700">
+           Contact
+      </a>
           </li>
 
         </ul>

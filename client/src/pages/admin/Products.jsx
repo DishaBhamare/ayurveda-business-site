@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../../services/api";
+import toast from "react-hot-toast";
 
 function Products() {
   const [products, setProducts] = useState([]);
@@ -10,6 +11,7 @@ const [newProduct, setNewProduct] = useState({
     description: "",
     category: "",
     price: "",
+    quantity: "",  
     stock: "",
     image: "",
 });
@@ -32,7 +34,9 @@ const [editingId, setEditingId] = useState(null);
 
   setNewProduct((prev) => ({
     ...prev,
-    [name]: value,
+    [name]:      name === "price" || name === "stock"
+        ? Number(value)
+        : value,
   }));
 };
   //delete the product 
@@ -48,24 +52,54 @@ const [editingId, setEditingId] = useState(null);
 
     await api.delete(`/products/${id}`);
 
+    toast.success("Product deleted successfully");
+
     fetchProducts();
 
   } catch (error) {
     console.error(error);
+    toast.error(
+  error.response?.data?.message ||
+  "Failed to delete product"
+);
   }
 
 };
 
 const handleAddProduct = async () => {
+
+  // ✅ Validation
+  if (
+    !newProduct.name ||
+    !newProduct.price ||
+    !newProduct.category ||
+    !newProduct.quantity ||
+    newProduct.stock===""
+  ) {
+    toast.error("Please fill all required fields");
+    return;
+  }
+
+  if (Number(newProduct.price) <= 0) {
+    toast.error("Price must be greater than 0");
+    return;
+  }
+
+  if (Number(newProduct.stock) < 0) {
+    toast.error("Stock cannot be negative");
+    return;
+  }
   try {
 
     if (isEditMode) {
 
       await api.put(`/products/${editingId}`, newProduct);
+      toast.success("Product updated successfully");
 
     } else {
 
       await api.post("/products", newProduct);
+        toast.success("Product added successfully");
 
     }
 
@@ -76,6 +110,7 @@ const handleAddProduct = async () => {
       description: "",
       category: "",
       price: "",
+      quantity: "", 
       stock: "",
       image: "",
     });
@@ -86,6 +121,10 @@ const handleAddProduct = async () => {
 
   } catch (error) {
     console.error(error);
+    toast.error(
+  error.response?.data?.message ||
+  "Operation failed"
+);
   }
 };
 //edit product
@@ -95,6 +134,7 @@ const handleEdit = (product) => {
     description: product.description,
     category: product.category,
     price: product.price,
+    quantity:product.quantity,
     stock: product.stock,
     image: product.image,
   });
@@ -157,6 +197,13 @@ const handleEdit = (product) => {
         value={newProduct.price}
         onChange={handleAddChange}
       />
+      <input
+      className="border rounded-lg p-3"
+      name="quantity"
+      placeholder="Quantity (100 ml / 250 g)"
+      value={newProduct.quantity}
+      onChange={handleAddChange}
+/>
 
       <input
         className="border rounded-lg p-3"
@@ -217,6 +264,7 @@ const handleEdit = (product) => {
             <th className="p-4 text-left">Name</th>
             <th className="p-4 text-left">Category</th>
             <th className="p-4 text-left">Price</th>
+            <th className="p-4 text-left">Quantity</th>
             <th className="p-4 text-left">Stock</th>
             <th className="p-4 text-center">Actions</th>
           </tr>
@@ -242,6 +290,7 @@ const handleEdit = (product) => {
               <td className="p-4">{product.category}</td>
 
               <td className="p-4">₹{product.price}</td>
+              <td className="p-4">{product.quantity}</td>
 
               <td className="p-4">{product.stock}</td>
 

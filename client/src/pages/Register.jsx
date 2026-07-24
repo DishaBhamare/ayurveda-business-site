@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate,Link } from "react-router-dom";
 import api from "../services/api";
+import toast from "react-hot-toast";
 
 
 const Register = () => {
@@ -15,7 +16,7 @@ const Register = () => {
     e.preventDefault();
 
       if(password!==confirmPassword){
-      alert("Passwords do not match");
+      toast.error("Passwords do not match");
       return;
     }
     try{
@@ -26,12 +27,12 @@ const Register = () => {
         password
        });
 
-     alert(response.data.message);
+     toast.success(response.data.message);
 
      navigate("/login");
 
     }catch(error){
-      alert(error.response?.data?.message || "Registration failed");
+      toast.error(error.response?.data?.message || "Registration failed");
     }
   };
 

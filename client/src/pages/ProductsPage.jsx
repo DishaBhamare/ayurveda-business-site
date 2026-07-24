@@ -4,6 +4,7 @@ import api from "../services/api";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { WishlistContext } from "../context/WishlistContext";
 
+
 function ProductsPage() {
   const [products, setProducts] = useState([]);
   const [filter, setFilter] = useState("all");
@@ -139,6 +140,7 @@ function ProductsPage() {
                   </p>
 
                   {/* Price + Button */}
+                  
                   <div className="flex justify-between items-center mt-5">
 
                     <p className="text-green-800 font-bold">
@@ -146,15 +148,33 @@ function ProductsPage() {
                     </p>
 
                     <p className="text-green-800 font-bold">
-                      {product.weight}
+                      {product.quantity}
                     </p>
+                <p
+                      className={`text-sm mt-2 ${
+                     product.stock > 0 ? "text-green-600" : "text-red-600"
+                     }`}
+                  >
+                    {product.stock > 0
+                     ? `${product.stock} in stock`
+                    : "Out of Stock"}
+            </p>
 
-                    <button
-                      onClick={() => addToCart(product)}
-                      className="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 text-sm transition"
+                   {product.stock > 0 ? (
+                   <button
+                    onClick={() => addToCart(product)}
+                    className="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 text-sm transition"
                     >
-                      Add to Cart
-                    </button>
+                    Add to Cart
+                  </button>
+              ) : (
+             <button
+             disabled
+             className="bg-gray-400 text-white px-4 py-2 rounded-lg cursor-not-allowed text-sm"
+              >
+             Out of Stock
+            </button>
+            )}
 
                   </div>
 

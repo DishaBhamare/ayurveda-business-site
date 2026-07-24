@@ -1,5 +1,6 @@
 import {useState, useEffect} from "react";
 import api from "../services/api";
+import toast from "react-hot-toast";
 
 function Profile (){
 
@@ -32,8 +33,9 @@ const handleSave = async () => {
         setEditProfile(response.data.user);
 
         setIsEditing(false);
+         toast.success("Profile updated successfully");
     } catch (error) {
-        console.error(error);
+        toast.error(error.response?.data?.message || "Failed to update profile");
     }
 };
 
@@ -90,7 +92,7 @@ const handleSave = async () => {
             onChange={handleChange}
           />
         ) : (
-          <p className="text-lg text-gray-800">{profile.name}</p>
+          <p className="text-lg text-gray-800">{profile.name ||"Not Added"}</p>
         )}
       </div>
 
@@ -100,7 +102,7 @@ const handleSave = async () => {
           Email
         </h3>
 
-        <p className="text-lg text-gray-800">{profile.email}</p>
+        <p className="text-lg text-gray-800">{profile.email ||"Not Added"}</p>
       </div>
 
       {/* Phone */}

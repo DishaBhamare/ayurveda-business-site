@@ -2,37 +2,42 @@ import { useState,useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import api from "../services/api";
 import AuthContext from "../context/AuthContext";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const { login } = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
    const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+ const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    
-    try{
-     
-    const response =await api.post("/users/login",
-       {
-        email, 
-        password
-       });
+  setIsLoading(true);
+
+  try {
+    const response = await api.post("/users/login", {
+      email,
+      password,
+    });
 
     login(response.data);
 
-    alert(response.data.message);
+    toast.success(response.data.message);
 
-    navigate("/");
-
-    }catch(error){
-      alert(error.response?.data?.message || "Login failed");
+    if (response.data.user.role === "admin") {
+      navigate("/admin/dashboard");
+    } else {
+      navigate("/");
     }
+  } catch (error) {
+    toast.error(error.response?.data?.message || "Login failed");
+  } finally {
+    setIsLoading(false);
   }
-  
+};
 
   return (
     < >
@@ -61,12 +66,18 @@ const Login = () => {
    
 
     <div className="pt-2">
-  <button
-    type="submit"
-    className="w-full bg-green-700 hover:bg-green-800 hover:scale-[1.02] text-white font-semibold py-3 rounded-xl transition duration-300"
-  >
-  Login
-  </button>
+    <button
+     type="submit"
+     disabled={isLoading}
+     className={`w-full text-white font-semibold py-3 rounded-xl transition duration-300 ${
+     isLoading
+      ? "bg-green-400 cursor-not-allowed"
+      : "bg-green-700 hover:bg-green-800 hover:scale-[1.02]"
+    }`}
+>
+     {isLoading ? "Logging in..." : "Login"}
+</button>
+
   </div>
 
    <p className="text-center text-gray-600 mt-5">

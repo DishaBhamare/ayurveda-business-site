@@ -1,3 +1,6 @@
+const authMiddleware = require("../middleware/authMiddleware");
+const adminMiddleware = require("../middleware/adminMiddleware");
+
 const express = require("express");
 const router = express.Router();
 const Product = require("../models/Product");
@@ -9,8 +12,14 @@ router.get("/", async (req, res) => {
 });
 
 // ADD product (NEW)
-router.post("/", async (req, res) => {
+router.post(  "/",
+  authMiddleware,
+  adminMiddleware,
+   async (req, res) => {
   try {
+
+    // console.log(req.body);
+
     const newProduct = new Product(req.body);
     await newProduct.save();
     res.json(newProduct);
@@ -20,7 +29,10 @@ router.post("/", async (req, res) => {
 });
 
 //delete 
-router.delete("/:id", async (req, res) => {
+router.delete( "/:id",
+  authMiddleware,
+  adminMiddleware,
+   async (req, res) => {
   try {
     const deletedProduct = await Product.findByIdAndDelete(req.params.id);
 
@@ -41,7 +53,10 @@ router.delete("/:id", async (req, res) => {
     });
   }
 });
-router.put("/:id", async (req, res) => {
+router.put( "/:id",
+  authMiddleware,
+  adminMiddleware,
+   async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
 
@@ -55,6 +70,7 @@ router.put("/:id", async (req, res) => {
       name,
       description,
       price,
+      quantity,
       category,
       image,
       stock,
@@ -63,6 +79,7 @@ router.put("/:id", async (req, res) => {
     product.name = name;
     product.description = description;
     product.price = price;
+    product.quantity = quantity;
     product.category = category;
     product.image = image;
     product.stock = stock;

@@ -1,5 +1,6 @@
 import {useContext} from "react";
 import { OrderContext } from "../context/OrderContext";
+import { Link } from "react-router-dom";
 
 function MyOrders() {
 
@@ -15,9 +16,27 @@ function MyOrders() {
             </h1>
              {orders.length === 0 ? (
 
-           <p className="text-gray-600">
-              You haven't placed any orders yet.
-           </p>
+        //    <p className="text-gray-600">
+        //       You haven't placed any orders yet.
+        //    </p>
+        <div className="text-center py-20">
+  <div className="text-6xl mb-4">📦</div>
+
+  <h2 className="text-2xl font-bold text-gray-700">
+    No Orders Yet
+  </h2>
+
+  <p className="text-gray-500 mt-2">
+    Start shopping and place your first order.
+  </p>
+
+  <Link
+    to="/products"
+    className="inline-block mt-6 bg-green-700 text-white px-6 py-3 rounded-lg hover:bg-green-800 transition"
+  >
+    Browse Products
+  </Link>
+</div>
     ) : (   // Orders will come here
         orders.map((order) => (
 

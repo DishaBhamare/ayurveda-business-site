@@ -1,6 +1,16 @@
 import { Outlet, NavLink } from "react-router-dom";
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import AuthContext from "../../context/AuthContext";
 
 function AdminLayout() {
+  const { logout } = useContext(AuthContext);
+const navigate = useNavigate();
+
+const handleLogout = () => {
+  logout();
+  navigate("/login", { replace: true });
+};
   return (
     <div className="min-h-screen flex bg-gray-100">
 
@@ -34,7 +44,7 @@ function AdminLayout() {
             Orders
           </NavLink>
 
-          <button className="mt-10 bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg">
+          <button className="mt-10 bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg" onClick={handleLogout}>
             Logout
           </button>
 

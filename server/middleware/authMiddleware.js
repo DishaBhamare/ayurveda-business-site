@@ -22,6 +22,7 @@ try{
 );
 // Save the logged-in user's ID inside the request object so that we can access it in the next function,every time we send a request to the backend, we will send the token in the header of the request and this middleware will check if the token is valid or not and if it is valid then it will decode the token and get the user ID from it and save it in the request object so that we can access it in the next function
 req.user = decoded.userId;
+req.role = decoded.role;
 
 // Everything is valid, continue to the next function
 next();

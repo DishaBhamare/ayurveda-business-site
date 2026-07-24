@@ -1,4 +1,6 @@
 import { useContext } from "react";
+import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
 
 import { CartContext } from "../context/CartContext";
 import { OrderContext } from "../context/OrderContext";
@@ -25,9 +27,9 @@ const { placeOrder, loadOrders } = useContext(OrderContext);
   const handleCheckout = async () => {
     try {
         await placeOrder();
-        alert("Order placed successfully!");
+        toast.success("Order placed successfully!");
     } catch (error) {
-        alert(error.response?.data?.message || "Order failed");
+        toast.error(error.response?.data?.message || "Order failed");
     }
 };
 
@@ -42,9 +44,24 @@ const { placeOrder, loadOrders } = useContext(OrderContext);
       {/* If cart is empty */}
       {cartItems.length === 0 ? (
 
-        <p className="text-gray-600">
-          Your cart is empty.
-        </p>
+        <div className="text-center py-20">
+  <div className="text-6xl mb-4">🛒</div>
+
+  <h2 className="text-2xl font-bold text-gray-700">
+    Your Cart is Empty
+  </h2>
+
+  <p className="text-gray-500 mt-2">
+    Looks like you haven't added any products yet.
+  </p>
+
+  <Link
+    to="/products"
+    className="inline-block mt-6 bg-green-700 text-white px-6 py-3 rounded-lg hover:bg-green-800 transition"
+  >
+    Continue Shopping
+  </Link>
+</div>
 
       ) : (
 

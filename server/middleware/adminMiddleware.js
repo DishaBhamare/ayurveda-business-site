@@ -3,7 +3,7 @@ const User = require("../models/User");
 const adminMiddleware = async (req, res, next) => {
     try{
  // Find user
-    const user = await User.findById(req.user);
+   const user = await User.findById(req.user).select("role");
 
     // If user doesn't exist
     if(!user){

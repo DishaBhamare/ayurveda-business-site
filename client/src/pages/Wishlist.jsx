@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { WishlistContext } from "../context/WishlistContext";
+import { Link } from "react-router-dom";
 
 function Wishlist() {
     const { wishlistItems, removeFromWishlist } = useContext(WishlistContext);
@@ -12,9 +13,24 @@ function Wishlist() {
             </h1>
              {wishlistItems.length === 0? (
 
-           <p className="text-gray-600">
-              You haven't added anything yet.
-           </p>
+           <div className="text-center py-20">
+  <div className="text-6xl mb-4">❤️</div>
+
+  <h2 className="text-2xl font-bold text-gray-700">
+    Your Wishlist is Empty
+  </h2>
+
+  <p className="text-gray-500 mt-2">
+    Save your favorite herbal products here.
+  </p>
+
+  <Link
+    to="/products"
+    className="inline-block mt-6 bg-green-700 text-white px-6 py-3 rounded-lg hover:bg-green-800 transition"
+  >
+    Explore Products
+  </Link>
+</div>
     ) : (   // wishlistitems will come here
         wishlistItems.map((item) => (
 
