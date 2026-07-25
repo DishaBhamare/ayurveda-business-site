@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { CartContext } from "../context/CartContext";
-
+import api from "../services/api";
 
 
 function FeaturedProducts() {
@@ -10,12 +10,18 @@ function FeaturedProducts() {
   const { addToCart } = useContext(CartContext);
 
   // Fetch products from backend
-  useEffect(() => {
-    fetch("http://localhost:5000/api/products")
-      .then((res) => res.json())
-      .then((data) => setProducts(data))
-      .catch((err) => console.log(err));
-  }, []);
+useEffect(() => {
+  const fetchProducts = async () => {
+    try {
+      const response = await api.get("/products");
+      setProducts(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  fetchProducts();
+}, []);
 
   // Filtering logic
   const filteredProducts =
@@ -110,7 +116,7 @@ function FeaturedProducts() {
                     ₹{product.price}
                   </p>
                   <p className="text-green-800 font-bold">
-                    {product.weight}
+                    {product.quantity}
                   </p>
 
                   <button
