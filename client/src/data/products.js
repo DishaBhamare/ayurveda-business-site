@@ -24,7 +24,7 @@ export const products = [
     description:
       "Homemade skincare powder made from dried orange peels. Free from chemicals and preservatives. Helps brighten skin and remove dullness.",
     category: "skincare",
-    image: null
+    image: "/images/Orange_Peel_Powder.png",
   },
   {
     id: 4,
@@ -42,6 +42,6 @@ export const products = [
     description:
       "Natural hibiscus-based face mask that helps improve skin glow, reduce acne, and refresh skin naturally.",
     category: "skincare",
-    image: null
+    image:"/images/HibiscusFaceMask.png",
   }
 ];
