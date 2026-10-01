@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const api = axios.create({
-//   baseURL:"https://ojasvi-backend.onrender.com/api",
-baseURL: "http://localhost:5000/api",
+baseURL: "https://ojasvi-backend.onrender.com/api",
+// baseURL: "http://localhost:5000/api",
 });
 
 // 👇 Add the interceptor here
