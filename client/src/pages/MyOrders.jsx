@@ -51,6 +51,9 @@ function MyOrders() {
             <h3 className="text-lg font-semibold">
                     Order Status: {order.status}
                   </h3>
+           <p className="text-gray-600 mt-1">
+           Payment Method: {order.paymentMethod === "cod" ? "Cash on Delivery" : "Online Payment"}
+         </p>
             <h3 className="text-lg font-semibold">
                     Total Amount: ₹{order.totalAmount.toFixed(2)}
                   </h3>

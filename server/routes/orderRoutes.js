@@ -1,12 +1,16 @@
 const express=require("express");
 const router=express.Router();
 
-const {placeOrder,getOrders,cancelOrder,getAllOrders,updateOrderStatus}=require("../controllers/orderController");
+const {placeOrder,getOrders,cancelOrder,getAllOrders,updateOrderStatus,createRazorpayOrder,verifyRazorpayPayment}=require("../controllers/orderController");
 const authMiddleware=require("../middleware/authMiddleware");
 const adminMiddleware=require("../middleware/adminMiddleware");
 
 //placeorder
 router.post("/place",authMiddleware,placeOrder);
+//create razorpay order
+router.post("/create-razorpay-order", authMiddleware, createRazorpayOrder);
+//verify razorpay payment
+router.post("/verify-razorpay-payment", authMiddleware, verifyRazorpayPayment);
 //getorder
 router.get("/my-orders",authMiddleware,getOrders);
 //cancelOrder

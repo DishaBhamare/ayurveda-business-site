@@ -41,15 +41,15 @@ const userSchema = new mongoose.Schema(
 
     role:{
       type:String,
-      enum:["user","admin"],
+      enum:["user","admin"],   //enum make sure that role written by user is either user or admin not any vlaue like superhero 
       default:"user"
     },
 
   },
 
-  // Automatically creates
-  // createdAt
-  // updatedAt
+  // timestamps Automatically creates
+  // createdAt-date at which the user entry is created 
+  // updatedAt-date at which it is updated  
   {
     timestamps: true,
   }

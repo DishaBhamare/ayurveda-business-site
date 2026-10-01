@@ -1,9 +1,9 @@
 import { useContext } from "react";
-import toast from "react-hot-toast";
+// import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 
 import { CartContext } from "../context/CartContext";
-import { OrderContext } from "../context/OrderContext";
+// import { OrderContext } from "../context/OrderContext";
 
 function Cart() {
 
@@ -16,7 +16,7 @@ const {
   decreaseQuantity,
 } = useContext(CartContext);
 
-const { placeOrder, loadOrders } = useContext(OrderContext);
+// const { placeOrder, loadOrders } = useContext(OrderContext);
 
 
   // Calculate total cart price
@@ -24,14 +24,14 @@ const { placeOrder, loadOrders } = useContext(OrderContext);
   return total + item.product.price * item.quantity;
 }, 0);
 
-  const handleCheckout = async () => {
-    try {
-        await placeOrder();
-        toast.success("Order placed successfully!");
-    } catch (error) {
-        toast.error(error.response?.data?.message || "Order failed");
-    }
-};
+//   const handleCheckout = async () => {
+//     try {
+//         await placeOrder();
+//         toast.success("Order placed successfully!");
+//     } catch (error) {
+//         toast.error(error.response?.data?.message || "Order failed");
+//     }
+// };
 
   return (
     <div className="max-w-5xl mx-auto px-6 py-12 min-h-screen">
@@ -152,12 +152,12 @@ const { placeOrder, loadOrders } = useContext(OrderContext);
 
             </div>
 
-          <button
-           onClick={handleCheckout}
-            className="bg-green-700 text-white px-6 py-3 rounded-lg hover:bg-green-800"
-          >
-          Checkout
-          </button>
+        <Link
+           to="/checkout"
+           className="bg-green-700 text-white px-6 py-3 rounded-lg hover:bg-green-800"
+        >
+        Checkout
+      </Link>
 
           </div>
 

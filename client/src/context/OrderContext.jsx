@@ -27,11 +27,21 @@ export const OrderProvider = ({ children }) => {
 };
 
 
-const placeOrder = async () => {
+const placeOrder = async (checkoutData) => {
     try {
 
         // 1. API call
-        const response = await api.post("/orders/place");
+        // console.log("SENDING ORDER:", checkoutData);
+        const response = await api.post("/orders/place", {
+            deliveryDetails: {
+            name: checkoutData.name,
+            phone: checkoutData.phone,
+            address: checkoutData.address,
+            city: checkoutData.city,
+            pincode: checkoutData.pincode,
+    },
+            paymentMethod: checkoutData.paymentMethod,
+});
 
         // Refresh cart
         await loadCart();

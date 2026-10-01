@@ -13,6 +13,7 @@ import ProductsPage from "./pages/ProductsPage";
 import Wishlist from "./pages/Wishlist";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
+import Checkout from "./pages/Checkout";
 
 import AdminLayout from "./pages/admin/AdminLayout";
 import Dashboard from "./pages/admin/Dashboard";
@@ -38,6 +39,14 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+  path="/checkout"
+  element={
+    <ProtectedRoute>
+      <Checkout />
+    </ProtectedRoute>
+  }
+/>
 
         <Route
           path="/my-orders"

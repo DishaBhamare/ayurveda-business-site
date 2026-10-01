@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const cartSchema = new mongoose.Schema({
 user: {
-  type: mongoose.Schema.Types.ObjectId,
+  type: mongoose.Schema.Types.ObjectId,  //Specifies that the field must store a 24-character hexadecimal MongoDB ObjectId.
   ref: "User",
   required: true,
   unique: true,

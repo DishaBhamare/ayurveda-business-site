@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 
 const authMiddleware = (req, res, next) => {
-     // Read the Authorization header =will give us the token sent from the frontend,headers used because we are sending the token in the header of the request
+     // Read the Authorization header will give us the token sent from the frontend,headers used because we are sending the token in the header of the request
   const authHeader = req.headers.authorization;
 
   // Check if Authorization header exists 

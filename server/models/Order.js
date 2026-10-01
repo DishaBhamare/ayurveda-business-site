@@ -26,6 +26,45 @@ const orderSchema = new mongoose.Schema({
     type: Number,
     required: true,
  },
+ deliveryDetails: {
+  name: {
+    type: String,
+    required: true,
+  },
+  phone: {
+    type: String,
+    required: true,
+  },
+  address: {
+    type: String,
+    required: true,
+  },
+  city: {
+    type: String,
+    required: true,
+  },
+  pincode: {
+    type: String,
+    required: true,
+  },
+},
+
+paymentMethod: {
+  type: String,
+  enum: ["online", "cod"],
+  required: true,
+},
+razorpayOrderId: {
+  type: String,
+},
+
+razorpayPaymentId: {
+  type: String,
+},
+
+razorpaySignature: {
+  type: String,
+},
   status: {
     type: String,
     enum: ["Pending", "Processing", "Shipped", "Delivered","Cancelled"], // used to define the possible values for the status field

@@ -86,7 +86,7 @@ const addToCart = async (req, res) => {
 const getCart = async (req, res) => {
     try {
 
-    const user=req.user;
+    const user=req.user; //get user from auth middleware
    let cart = await Cart.findOne({ user }).populate("items.product");
       if (!cart) {
        return res.status(200).json({

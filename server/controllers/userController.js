@@ -8,13 +8,13 @@ const registerUser = async (req, res) => {
 
   try {
 
-    // Extract data sent from the frontend
+    // Extract data sent from the frontend  (whenever user types anything in frontend it stores it in http body in json format)
     const { name, email, password } = req.body;
 
     // ===============================
     // Check whether this email already exists
     // ===============================
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ email });//it return null if user not found no error
 
     // If user already exists,
     // stop the function and return an error
@@ -29,6 +29,7 @@ const registerUser = async (req, res) => {
     // ===============================
     // Create a new user
     // ===============================
+    //here we directly write name,email becuase the mongodb automatically matches it with the name in collection and store it like name:name
     const newUser = await User.create({
       name,
       email,
@@ -50,10 +51,10 @@ const registerUser = async (req, res) => {
     res.status(201).json({
     message: "User Registered Successfully",
 
-    // Send JWT token to the frontend
+    // Send JWT token to the frontend 
     token,
 
-    // Send only the required user details
+    // Send only the required user details ,user cannot directly see it ,it is in devloper tools of browser
      user: {
         id: newUser._id,
         name: newUser.name,
@@ -64,7 +65,7 @@ const registerUser = async (req, res) => {
   } catch (error) {
 
     // Handle unexpected errors
-    res.status(500).json({
+    res.status(500).json({ 
       message: error.message,
     });
 
