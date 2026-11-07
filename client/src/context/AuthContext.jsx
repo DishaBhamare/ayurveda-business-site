@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect} from "react";
+import { createContext, useState, useEffect } from "react";
 
 const AuthContext= createContext(); //it is createContext and not Context() because it context is not created new will be created 
 

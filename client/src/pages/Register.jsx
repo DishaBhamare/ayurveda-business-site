@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useContext } from "react";
+import AuthContext from "../context/AuthContext";
 import { useNavigate,Link } from "react-router-dom";
 import api from "../services/api";
 import toast from "react-hot-toast";
@@ -11,30 +13,35 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
 
    const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-      if(password!==confirmPassword){
-      toast.error("Passwords do not match");
-      return;
-    }
-    try{
-     
-    const response =await api.post("/users/register",
-       { name, 
-        email, 
-        password
-       });
+  if (password !== confirmPassword) {
+    toast.error("Passwords do not match");
+    return;
+  }
 
-     toast.success(response.data.message);
+  try {
+    const response = await api.post("/users/register", {
+      name,
+      email,
+      password
+    });
 
-     navigate("/login");
+    // Update authentication state and localStorage
+    login(response.data);
 
-    }catch(error){
-      toast.error(error.response?.data?.message || "Registration failed");
-    }
-  };
+    toast.success(response.data.message);
+
+    // Redirect to homepage
+    navigate("/");
+
+  } catch (error) {
+    toast.error(error.response?.data?.message || "Registration failed");
+  }
+};
 
   return (
     < >
